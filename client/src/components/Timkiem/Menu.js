@@ -15,7 +15,7 @@ export default function Menu() {
             			
             		</li>
             		<li>
-            			<a>Quản ly ly lịch trình</a>
+            			<a>Quản ly lịch trình</a>
             		</li>
             		<li>
             			<a href="#">Thống kê</a>
