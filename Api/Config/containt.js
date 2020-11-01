@@ -1,4 +1,4 @@
-const DBmongo = 'mongodb://localhost:27017';
-const DBname = 'VeTauOnline';
+const DbUrl = 'mongodb://localhost:27017';
+const DbName = 'VeTauOnline';
 
-module.exports = {DBmongo,DBname}
+module.exports = {DbUrl,DbName}

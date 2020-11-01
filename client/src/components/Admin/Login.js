@@ -5,18 +5,19 @@ import { axios } from '../../config/constant';
 
 
 export default function Login() {
-    const [taikhoan, setTaiKhoan] = useState({
-        name:'',
-        password: ''
+    const [taiKhoan, setTaiKhoan] = useState({
+        tenTaiKhoan:'',
+        matKhau: ''
 
     });
     async function KiemTraAccount(){
-        let res  = await axios.post('/dangnhap',{
-            name:taikhoan.name,
-            password:taikhoan.password
+        let res  = await axios.post('/login',{
+            email:taiKhoan.tenTaiKhoan,
+            password:taiKhoan.matKhau
         })
-        if(res.data.status === 'thanhcong'){
-            if(res.data.data.VaiTro === 1){
+        if(res.data.status === 'thanhcong'){    
+            if(res.data.data.vaiTro === 1){
+                console.log(res.data.data);
                 window.location.pathname = "/quanly";
             }
             else{
@@ -24,7 +25,7 @@ export default function Login() {
             }
         }
         else{
-            alert('Dang nhap that bai');
+            alert('Đăng nhập thất bại');
         }
     }
 
@@ -35,13 +36,23 @@ export default function Login() {
                     <div className="form-group">
                         <label className="control-label col-sm-3">User:</label>
                         <div className="col-sm-9">
-                            <input type="text" className="form-control" placeholder="User" onChange = {(e)=> {setTaiKhoan({...taikhoan,name:e.target.value})}}/>
+                            <input type="text" className="form-control" placeholder="User"  onChange={(e) => {
+                                                        setTaiKhoan({
+                                                            ...taiKhoan,//giu lai giu lieu truoc do 
+                                                            tenTaiKhoan:e.target.value
+                                                        })
+                                                    }}/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label className="control-label col-sm-3">Password:</label>
                         <div className="col-sm-9">          
-                            <input type="password" className="form-control" placeholder="Enter password" name="pwd" onChange = {(e)=> {setTaiKhoan({...taikhoan,password:e.target.value})}} />
+                            <input type="password" className="form-control" placeholder="Enter password" name="pwd" onChange={(e) => {
+                                                        setTaiKhoan({
+                                                            ...taiKhoan,
+                                                            password: e.target.value
+                                                        })
+                                                    }} />
                         </div>
                     </div>
                     <div className="form-group">        
@@ -53,8 +64,12 @@ export default function Login() {
                     </div>
                     <div className="form-group">        
                         <div className="col-sm-offset-3 col-sm-9">
-                            <a href="formQLLich.html" type="submit" className="btn btn-default" onClick={(e)=>{e.preventDefault();KiemTraAccount()}}  >Submit</a>
+                            <a type="submit" className="btn btn-default"  onClick={(e) => {
+                                        e.preventDefault();
+                                        KiemTraAccount()
+                                    }}>Đăng nhập</a>
                         </div>
+
                     </div>
                 </div>
             </form>

@@ -1,15 +1,16 @@
-const {DBmongo,DBname} = require('../Config/containt');
+const {DbUrl,DbName} = require('../Config/containt');
 const MongoClient = require('mongodb').MongoClient;
-const asset = require('assert');
+const ObjectId = require('mongodb').ObjectId;
+const assert = require('assert');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
 
-module.exports= {
-    KiemTraDangNhap: async function (req, res) {
+module.exports = {
+    KiemTraAccount: async function (req, res) {
         const client = new MongoClient(DbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-        var tenTaiKhoan = req.body.name;
+        var tenTaiKhoan = req.body.email;
         var matKhau = req.body.password;
 
         console.log(tenTaiKhoan);
@@ -23,12 +24,12 @@ module.exports= {
              */
             const col = client.db(dbName).collection("TaiKhoan");
 
-            var resultUser = await col.find({ "Name": tenTaiKhoan }).next();
+            var resultUser = await col.find({ "taiKhoan.tenTaiKhoan": tenTaiKhoan }).next();
 
             if (resultUser === null) {
                 res.status(200).json({
                     status: 'fail',
-                    message: 'Tài khoản không tồn tại'
+                    message: 'Tài khoản không tồnd tại'
                 });
             } else {
 
@@ -39,7 +40,7 @@ module.exports= {
 
                         var payload = {
                             userID: resultUser._id,
-                            vaiTro: resultUser.VaiTro
+                            vaiTro: resultUser.vaiTro
                         };
 
                         //7 ngày hết hạn token
@@ -61,10 +62,11 @@ module.exports= {
             }
         });
     },
+
     KiemTraTokenAdmin: async function (req, res, next) {
         var token = req.header('token');
         let resultToken = await jwt.verify(token, 'thai');
-        if (resultToken.payload.VaiTro === 1) {
+        if (resultToken.payload.vaiTro === 1) {
             res.status(200).json({
                 status: "thanhcong",
                 message: 'Token hợp lệ',
@@ -76,6 +78,7 @@ module.exports= {
             });
         }
     },
+
     KiemTraTokenChuShop: function (req, res, next) {
         var token = req.header('token');
         jwt.verify(token, 'thai', function (err, payload) {
@@ -93,6 +96,7 @@ module.exports= {
             }
         });
     },
+
    
 
 }

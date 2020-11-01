@@ -4,6 +4,6 @@ var router = express.Router();
 const loginController =require('../controller/loginController');
 
 
-router.post('/dangnhap',loginController.KiemTraDangNhap);
+router.post('/login',loginController.KiemTraAccount);
 
 module.exports = router;

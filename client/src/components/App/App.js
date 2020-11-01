@@ -11,9 +11,9 @@ export default function App() {
 			<Fragment>
 				<Switch>
 					<Route exact path="/" component={TrangChu}></Route>
-					<Route path="/login" component={Login}></Route>
-					<Route path="/nhanvien" component={NhanVien}></Route>
-					<Route path="/quanly" component={QuanLy}></Route>
+					<Route path="/Login" component={Login}></Route>
+					<Route path="/Nhanvien" component={NhanVien}></Route>
+					<Route path="/Quanly" component={QuanLy}></Route>
 				
 					
 				</Switch>
