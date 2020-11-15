@@ -1,11 +1,10 @@
-import axioss from 'axios';
-// const ApiLink ="https://tiemdo-api.herokuapp.com/api/";
+import axioss from 'axios'
 
-const ApiLink ="http://localhost:3030/api/";
+const ApiLink ="http://localhost:3000/api/";
 
 const axios = axioss.create({
     baseURL: ApiLink,
-    timeout: 150*1000,
+    timeout: 15*1000,
 })
 
 export {ApiLink,axios};

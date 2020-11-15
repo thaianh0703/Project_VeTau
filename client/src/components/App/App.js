@@ -12,8 +12,8 @@ export default function App() {
 				<Switch>
 					<Route exact path="/" component={TrangChu}></Route>
 					<Route path="/Login" component={Login}></Route>
-					<Route path="/Nhanvien" component={NhanVien}></Route>
-					<Route path="/Quanly" component={QuanLy}></Route>
+					<Route path="/NhanVien" component={NhanVien}></Route>
+					<Route path="/QuanLy" component={QuanLy}></Route>
 				
 					
 				</Switch>

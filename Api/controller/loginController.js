@@ -1,11 +1,9 @@
-const {DbUrl,DbName} = require('../Config/containt');
+const {DbUrl,dbName} = require('../Config/containt');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 const assert = require('assert');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
-
+const bcrypt = require('bcrypt');//thu vien
+const jwt = require('jsonwebtoken');//token
 
 module.exports = {
     KiemTraAccount: async function (req, res) {
@@ -24,7 +22,7 @@ module.exports = {
              */
             const col = client.db(dbName).collection("TaiKhoan");
 
-            var resultUser = await col.find({ "taiKhoan.tenTaiKhoan": tenTaiKhoan }).next();
+            var resultUser = await col.find({ "taikhoan.email": tenTaiKhoan }).next();
 
             if (resultUser === null) {
                 res.status(200).json({
@@ -40,7 +38,7 @@ module.exports = {
 
                         var payload = {
                             userID: resultUser._id,
-                            vaiTro: resultUser.vaiTro
+                            vaiTro: resultUser.vaitro
                         };
 
                         //7 ngày hết hạn token
@@ -62,11 +60,11 @@ module.exports = {
             }
         });
     },
-
+   
     KiemTraTokenAdmin: async function (req, res, next) {
         var token = req.header('token');
         let resultToken = await jwt.verify(token, 'thai');
-        if (resultToken.payload.vaiTro === 1) {
+        if (resultToken.payload.vaiTro === 0) {
             res.status(200).json({
                 status: "thanhcong",
                 message: 'Token hợp lệ',
@@ -82,7 +80,7 @@ module.exports = {
     KiemTraTokenChuShop: function (req, res, next) {
         var token = req.header('token');
         jwt.verify(token, 'thai', function (err, payload) {
-            if (payload.payload.vaiTro === 2) {
+            if (payload.payload.vaiTro === 1) {
                 res.status(200).json({
                     status: "thanhcong",
                     message: 'Token hợp lệ',
@@ -96,7 +94,17 @@ module.exports = {
             }
         });
     },
-
-   
-
+    KiemTraTokenNormal: function (req, res, next) {
+        var token = req.header('token');
+        jwt.verify(token, process.env.SECRET_KEY, function (err, payload) {
+            if (payload.payload.vaiTro === 2) {
+                next();
+            } else {
+                res.status(200).json({
+                    status: "fail",
+                    message: 'Token không hợp lệ !',
+                });
+            }
+        });
+    },
 }

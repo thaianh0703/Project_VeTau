@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
 import { axios } from '../../config/constant';
+//import {NhanVien,QuanLy} from '../index'
 
 
 
 
 export default function Login() {
-    const [taiKhoan, setTaiKhoan] = useState({
-        tenTaiKhoan:'',
-        matKhau: ''
-
+    const [taikhoan, setTaiKhoan] = useState({
+        email: '',
+        password: '',
     });
-    async function KiemTraAccount(){
-        let res  = await axios.post('/login',{
-            email:taiKhoan.tenTaiKhoan,
-            password:taiKhoan.matKhau
+    async function KiemTraAccount() {
+        let res = await axios.post('/dangnhap', {
+            email: taikhoan.email,
+            password: taikhoan.password
         })
-        if(res.data.status === 'thanhcong'){    
-            if(res.data.data.vaiTro === 1){
-                console.log(res.data.data);
-                window.location.pathname = "/quanly";
+        if (res.data.status === 'thanhcong') {
+            // kiem tra và chuyển vể giao dien tuong ung
+            if (res.data.data.vaiTro === 0) {
+                window.location.pathname = '/QuanLy';
+            } else {
+                
+                window.location.pathname = '/NhanVien';
+               
             }
-            else{
-                window.location.pathname = "/nhanvien";
-            }
-        }
-        else{
-            alert('Đăng nhập thất bại');
+            //alert('thanh cong')
+            //setCookie('userID', res.data.data.userID); // truyen du lieu nguoi dung cho cookie ,dat tên là 'userID'
+        } else {           
+            alert("Dang nhap that bai")
         }
     }
 
   	return (
     	<div>
-			<form className="form-horizol form-control" style={{width: '400px', height: '200px', margin: 'auto', marginTop: '200px'}}>
+			{/* <form className="form-horizol form-control" style={{width: '400px', height: '200px', margin: 'auto', marginTop: '200px'}}>
                 <div>
                     <div className="form-group">
                         <label className="control-label col-sm-3">User:</label>
@@ -72,7 +74,39 @@ export default function Login() {
 
                     </div>
                 </div>
-            </form>
+            </form> */}
+            <hr></hr>
+            <div className="container">
+                <h1 className="text-center"> ĐĂNG NHẬP</h1>
+                <div className="row">
+                    <div className="col-xs-12 col-sm-12 col-md-4 well well-sm col-md-offset-4">
+
+                        <form>
+                            <div className="row">
+
+                            </div> <input className="form-control" name="youremail" placeholder="Email" type="email" onChange={(e) => {
+                                setTaiKhoan({
+                                    ...taikhoan,//giu lai giu lieu truoc do 
+                                    email: e.target.value
+                                })
+                            }} />
+                            <input className="form-control" name="password" placeholder="Mật khẩu" type="password" onChange={(e) => {
+                                setTaiKhoan({
+                                    ...taikhoan,
+                                    password: e.target.value
+                                })
+                            }} />
+
+                            <br />
+                            <br />
+                            <button className="btn btn-lg btn-primary btn-block" onClick={(e) => {
+                                e.preventDefault();
+                                KiemTraAccount()
+                            }}> Đăng Nhập</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
     	</div>
   	);
 }
